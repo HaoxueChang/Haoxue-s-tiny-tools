@@ -2,7 +2,11 @@
 # CountVectorizer()是将文本向量化，即将文本分词后转换为相应的词频矩阵或词向量
 # TfidfTransformer()是对词频矩阵计算相应的tfidf值
 # TfidfVectorizer()则同时实现计算词频矩阵和计算tfidf的功能
-
+# class sklearn.feature_extraction.text.TfidfVectorizer(input='content', encoding='utf-8', decode_error='strict', strip_accents=None, lowercase=True,
+#                             preprocessor=None, tokenizer=None, analyzer='word', stop_words=None, token_pattern='(?u)\b\w\w+\b', ngram_range=(1, 1),
+#                             max_df=1.0, min_df=1, max_features=None, vocabulary=None, binary=False, dtype=<class 'numpy.int64'>, norm='l2', use_idf=True, 
+#                             smooth_idf=True, sublinear_tf=False)
+# norm：默认为'l2'，可设为'l1'或None，计算得到tf-idf值后，如果norm='l2'，则整行权值将归一化，即整行权值向量为单位向量，如果norm=None，则不会进行归一化。大多数情况下，使用归一化是有必要的。
 from sklearn.feature_extraction.text import TfidfVectorizer
 corpus = [          'This is the first document.',
 		'This is the second second document.',
