@@ -16,3 +16,6 @@ re.sub("'"," ",text)
 re.sub(r'\'[Ss]', 'S', text)
 re.sub(r"'[Ss]", 'S', text)
 #text="'S", output = 'S'
+
+#匹配字母数字与非字母数字
+# https://blog.csdn.net/uvyoaa/article/details/80854459
