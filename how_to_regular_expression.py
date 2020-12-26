@@ -37,6 +37,14 @@ re.split('\\b123=\\B','==123!! abc123,123,123==abc,123')  #output:['==123!! abc1
 #下划线和字母数字算作一类
 re.split('123_\\b','==123!! abc 123_123_. 123_. 123abc. 123') #output:['==123!! abc 123_', '. ', '. 123abc. 123']
 
+#边界符里面不能有贪婪匹配？贪婪匹配不生效？
+re.sub(r'\bTest\b[.]*\s*[a-zA-Z0-9]*$', '----', 'test.... aaa0', flags=re.IGNORECASE)
+# '----'
+re.sub(r'\bTest|Test[.]*\b\s*[a-zA-Z0-9]*$', '----', 'test. aaa0', flags=re.IGNORECASE)
+# '----. aaa0'
+re.sub(r'\bTest[.]*\b\s*[a-zA-Z0-9]*$', '----', 'test. aaa0', flags=re.IGNORECASE)
+# 'test. aaa0'
+
 # （?u),该表达式打开re.U（re.UNICODE）标志,根据Unicode解释字符集
 # https://docs.python.org/2/library/re.html#re.U
 #re.I, ignore case, perform case-insenstive matching
@@ -119,3 +127,19 @@ result.group(1)
 re.sub(r'(^[^0-9]{2,}?)([0-9 ]{5,})$', r'\1', text)
 # 下面表达式匹配开头有两个以上非数字字符后面以0个或多个数字或空格结尾的字符串，r'\1'表示取出第一个圆括号内匹配到的pattern,即两个以上非数字字符部分，可以清洗掉字符串尾部的0个或多个空格或数字
 re.sub(r'(^[^0-9]{4,}?)([0-9 ]*)$', r'\1', text)
+
+#值得精读的博文： https://blog.csdn.net/LaoYuanPython/article/details/100045507
+#                https://blog.csdn.net/LaoYuanPython/article/details/99752968
+
+# .	匹配任意1个字符（除了\n）
+# [ ]	匹配[ ]中列举的字符
+# \d	匹配数字，即0-9
+# \D	匹配非数字，即不是数字
+# \s	匹配空白，即 空格，tab键
+# \S	匹配非空白
+# \w	匹配非特殊字符，即a-z、A-Z、0-9、_、汉字
+# \W	匹配特殊字符，即非字母、非数字、非汉字、非_
+
+#正则表达式识别重复字符串：
+#https://blog.csdn.net/weixin_43758603/article/details/109137653
+(.)\1+
