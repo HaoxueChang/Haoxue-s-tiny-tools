@@ -52,3 +52,70 @@ b = re.compile(r"\d+\.\d*")
 
 # https://docs.python.org/2/library/re.html#
 # https://docs.python.org/2/howto/regex.html#regex-howto
+
+#正则表达式的() [] {} 有着不同的意思。
+# （）是为了提取匹配字符串，表达式中有几个()就有几个相应的匹配字符串
+# [] 是定义匹配的字符范围。比如[a-zA-Z0-9]表示相应位置的字符要匹配英文字符和数字。[\s*表示空格或者*号]
+# {}一般是用来匹配的长度。比如\s{3}表示匹配三个空格，\s[1,3]表示匹配1到3个空格
+# (0-9)匹配'0-9'本身。[0-9]*匹配数字（注意后面有*，可以为空）[0-9]+匹配数字(注意后面有+，不可以为空)，[0-9]{0,9}表示长度为0到9的数字字符串。
+
+#下面式子表示匹配圆括号，方括号和花括号里面的内容，对转义符稍作修改也能实现，还不是很明白(),[],{}的用法
+re.sub(u"\\(.*?\\)|\\{.*?}|\\[.*?]", "", x)
+
+# ^在正则表达式中有两种用法，一是表达以什么开头，二是表达对什么取反。
+# 可以用下面的代码进行测试
+import re
+s = ['abc-123-cba',       #'abc'在最前面
+    '123-abc-aabbcc-123', #'abc'在中间
+    'a-2-3-b-1',          #最前面是'a'
+    'b-x-c-a-1',          #最前面是'b'
+    'z-a-1',              #'a'在中间
+    'x-y-z',              #字符串没有任何'a','b','c'
+    'cbaabc'              #字符串全是'a','b','c'组成
+]
+st = r'abc'  
+for i in s:
+    m = re.search(st, i)
+    if m:
+        print(i)
+# 'abc'表示字符串中有'abc'就匹配成功
+# '[abc]'表示字符串中有'a'或'b'或'c'就匹配成功
+# '^abc'表示字符串由'abc'开头就匹配成功
+# '^[abc]'表示字符串由'a'或'b'或'c'开头的，
+# '[^abc]'表示匹配'a','b','c'之外的字符。如果一个字符串是由'a','b','c'组合起来的，那就无法匹配到
+
+# 常用的取反：
+# '[^a-z]' 所有小写字母之外的字符
+# '[^a-zA-Z]' 所有大写和小写字母之外的字符
+# '[^0-9]' 所有数字之外的字符
+
+# 正则表达式中问号的用法：
+# 用法1：可选匹配
+# 有无数字均可匹配
+content = 'hello 1234567 world this a demo'
+result = re.match('^hel.*(\d+)?.*demo$',content)
+result.group(0)
+# 'hello 1234567 world this a demo'
+content = 'hello world this a demo'
+result = re.match('^hel.*(\d+)?.*demo$',content)
+result.group(0)
+# 'hello world this a demo'
+# 用法2：实现非贪婪匹配
+# 下面例子问号是对.*起作用的，使它进行非贪婪匹配
+content = 'hello 1234567 world this a demo'
+result = re.match('^hel.*?(\d+).*demo$',content)
+result.group(0)
+# 'hello 1234567 world this a demo'
+result.group(1)
+# '1234567'
+result = re.match('^hel.*(\d+).*demo$',content)
+result.group(0)
+#'hello 1234567 world this a demo'
+result.group(1)
+#'7'
+
+
+# 下面表达式匹配开头有两个以上非数字字符后面以5个以上数字或空格结尾的字符串，r'\1'表示取出第一个圆括号内匹配到的pattern,即两个以上非数字字符部分，可以清洗掉字符串尾部的连续5个空格或数字
+re.sub(r'(^[^0-9]{2,}?)([0-9 ]{5,})$', r'\1', text)
+# 下面表达式匹配开头有两个以上非数字字符后面以0个或多个数字或空格结尾的字符串，r'\1'表示取出第一个圆括号内匹配到的pattern,即两个以上非数字字符部分，可以清洗掉字符串尾部的0个或多个空格或数字
+re.sub(r'(^[^0-9]{4,}?)([0-9 ]*)$', r'\1', text)
