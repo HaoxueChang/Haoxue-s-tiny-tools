@@ -98,7 +98,7 @@ for i in s:
 # '[^0-9]' 所有数字之外的字符
 
 # 正则表达式中问号的用法：
-# 用法1：可选匹配
+# 用法1：可选匹配,其实就是match 0次或1次
 # 有无数字均可匹配
 content = 'hello 1234567 world this a demo'
 result = re.match('^hel.*(\d+)?.*demo$',content)
@@ -121,7 +121,10 @@ result.group(0)
 #'hello 1234567 world this a demo'
 result.group(1)
 #'7'
-
+# ?, 贪婪匹配模式，match 0次或1次，ab?会匹配a或ab
+# *, 贪婪匹配模式，match 0次或多次，ab*会匹配a或ab或abbbbbb,任意多个b
+# +, 贪婪匹配模式，match 1次或多次，ab*会匹配ab或abbbbbb,任意多个b
+# *?,+?,??, 非贪婪匹配模式，match到最近的一个
 
 # 下面表达式匹配开头有两个以上非数字字符后面以5个以上数字或空格结尾的字符串，r'\1'表示取出第一个圆括号内匹配到的pattern,即两个以上非数字字符部分，可以清洗掉字符串尾部的连续5个空格或数字
 re.sub(r'(^[^0-9]{2,}?)([0-9 ]{5,})$', r'\1', text)
@@ -131,7 +134,7 @@ re.sub(r'(^[^0-9]{4,}?)([0-9 ]*)$', r'\1', text)
 #值得精读的博文： https://blog.csdn.net/LaoYuanPython/article/details/100045507
 #                https://blog.csdn.net/LaoYuanPython/article/details/99752968
 
-# .	匹配任意1个字符（除了\n）
+# .	匹配任意1个字符（除了\n）,打开DOTALL flag, 可以匹配newline
 # [ ]	匹配[ ]中列举的字符
 # \d	匹配数字，即0-9
 # \D	匹配非数字，即不是数字
@@ -142,4 +145,25 @@ re.sub(r'(^[^0-9]{4,}?)([0-9 ]*)$', r'\1', text)
 
 #正则表达式识别重复字符串：
 #https://blog.csdn.net/weixin_43758603/article/details/109137653
-(.)\1+
+pattern = r'^(\w+)\1+$'
+# ^:以匹配内容开头
+# $:以匹配内容结尾
+# (一组字符)
+# \w:一个数字,或大小写字母
+# +:出现至少一次
+# \1:重复前面的部分一次
+
+#对比以下输出差异：
+re.sub(r'\b(.{5,})(\1\b)+', r'\1', 'abcdef abcdef ')
+#'abcdef abcdef '
+re.sub(r'(.{5,})(\1)+', r'\1', 'abcdef abcdef ')
+#'abcdef '
+re.sub(r'(.{5,})(\1)+', r'\1', 'abcdef abcdef abcdef abcdef abcdef ')
+#'abcdef abcdef abcdef '
+re.sub(r'(.{5,}?)(\1)+', r'\1', 'abcdef abcdef abcdef abcdef abcdef ')
+#'abcdef '
+
+# (?:)
+# (?=) 前向断言，haoxue(?=ABC),会匹配出现在ABC之前的haoxue
+# (?!) 负向先行断言，haoxue(?!=ABC),会匹配后面不是ABC的haoxue
+# (?<=) 正向后向断言，(?<=ABC)haoxue,会匹配前面是ABC的haoxue,后向断言的括号里的
