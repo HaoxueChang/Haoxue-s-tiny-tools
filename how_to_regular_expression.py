@@ -162,8 +162,9 @@ re.sub(r'(.{5,})(\1)+', r'\1', 'abcdef abcdef abcdef abcdef abcdef ')
 #'abcdef abcdef abcdef '
 re.sub(r'(.{5,}?)(\1)+', r'\1', 'abcdef abcdef abcdef abcdef abcdef ')
 #'abcdef '
-
+pa
 # (?:)
 # (?=) 前向断言，haoxue(?=ABC),会匹配出现在ABC之前的haoxue
 # (?!) 负向先行断言，haoxue(?!=ABC),会匹配后面不是ABC的haoxue
-# (?<=) 正向后向断言，(?<=ABC)haoxue,会匹配前面是ABC的haoxue,后向断言的括号里的
+# (?<=) 正向后向断言，(?<=ABC)haoxue,会匹配前面是ABC的haoxue,后向断言的括号里的pattern不能超过３个字符，且不支持组的引用，比如a*,a{3,4}均不支持
+# (?!<) 负向后向断言，the contained pattern must only match strings of some fixed length and shouldn’t contain group references
