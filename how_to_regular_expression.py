@@ -156,6 +156,8 @@ pattern = r'^(\w+)\1+$'
 #对比以下输出差异：
 re.sub(r'\b(.{5,})(\1\b)+', r'\1', 'abcdef abcdef ')
 #'abcdef abcdef '
+re.sub(r'\b(.{5,})(\1\b)+', r'\1', 'CITY OF ACITY OF A')
+#'CITY OF A'
 re.sub(r'(.{5,})(\1)+', r'\1', 'abcdef abcdef ')
 #'abcdef '
 re.sub(r'(.{5,})(\1)+', r'\1', 'abcdef abcdef abcdef abcdef abcdef ')
